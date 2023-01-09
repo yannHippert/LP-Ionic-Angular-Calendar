@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/films"></ion-back-button>
+    </ion-buttons>
+    <ion-title>film</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="toggleModif()">Rendre modifiable</ion-button>
+  <div *ngIf="!modif">j'affiche de délai</div>
+  <div *ngIf="modif">je peux modifier</div>
+</ion-content>
