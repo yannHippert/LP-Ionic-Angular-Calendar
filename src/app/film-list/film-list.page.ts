@@ -6,10 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./film-list.page.scss'],
 })
 export class FilmListPage implements OnInit {
+  film = {
+    title: 'test',
+    img: '/assets/imgs/noimg.png',
+    param1: 'test param 1',
+    param2: 'test param 2',
+  };
 
-  constructor() { }
+  films: Array<any> = [];
+
+  constructor() {}
 
   ngOnInit() {
+    for (let i = 0; i < 5; i++) {
+      this.films.push({ id: i, ...this.film });
+    }
   }
-
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-film-new',
@@ -7,11 +8,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilmNewPage implements OnInit {
   modif: boolean = false;
-  constructor() {}
+
+  constructor(private alertCtrl: AlertController) {}
 
   ngOnInit() {}
 
-  toggleModif(): void {
-    this.modif = !this.modif;
+  async toggleModif() {
+    if (this.modif) {
+      this.modif = !this.modif;
+      return;
+    }
+
+    const alert = await this.alertCtrl.create({
+      header: 'Header',
+      subHeader: 'Subheader',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'Cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: () => (this.modif = !this.modif),
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }
