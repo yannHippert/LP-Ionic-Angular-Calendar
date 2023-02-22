@@ -11,12 +11,12 @@ const routes: Routes = [
   {
     path: 'new',
     loadChildren: () =>
-      import('./film-new/film-new.module').then((m) => m.FilmNewPageModule),
+      import('../film-new/film-new.module').then((m) => m.FilmNewPageModule),
   },
   {
     path: ':id',
     loadChildren: () =>
-      import('./film/film.module').then((m) => m.FilmPageModule),
+      import('../film/film.module').then((m) => m.FilmPageModule),
   },
 ];
 

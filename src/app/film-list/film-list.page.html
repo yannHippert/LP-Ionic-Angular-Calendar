@@ -4,20 +4,18 @@
   </ion-toolbar>
 </ion-header>
 
-<h2>Création d'un nouveau film</h2>
-<ion-button routerLink="/tabs/films/new">Création</ion-button>
-<h2>Liste des films</h2>
-<ion-grid>
-  <ion-row>
-    <ion-col size="4" *ngFor="let film of films">
-      <ion-list [routerLink]="['/tabs/films/', film.id]">
-        <ion-item>
-          <img [src]="film.img" [alt]="film.title" />
-        </ion-item>
-        <ion-item> {{film.title}} </ion-item>
-        <ion-item> {{film.param1}} </ion-item>
-        <ion-item> {{film.param2}} </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+<ion-content>
+  <h2>Création d'un nouveau film</h2>
+  <ion-button routerLink="/tabs/films/new">Création</ion-button>
+  <h2>Liste des films</h2>
+
+  <ion-list>
+    <ion-item
+      *ngFor="let film of films"
+      [routerLink]="['/tabs/films/', film.id]"
+    >
+      <img [src]="film.pictureLink" width="20" />
+      <ion-text style="margin-left: 10px">{{ film.title }}</ion-text>
+    </ion-item>
+  </ion-list>
+</ion-content>

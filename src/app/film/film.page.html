@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/films"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="film">{{film.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="setModif()">Rendre Modifiable</ion-button>
+  <div *ngIf="!modif">
+    <ion-grid *ngIf="film">
+      <ion-row>
+        <ion-col>
+          <strong>Au cinéma :</strong>
+          <ion-icon *ngIf="film.onAir" name="checkmark"></ion-icon>
+          <ion-icon *ngIf="!film.onAir" name="close-circle"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="onDelete(film.id)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <img [src]="film.pictureLink" />
+        </ion-col>
+        <ion-col size="6">
+          <strong>Title</strong> <br />
+          {{film.title}} <br />
+          <strong>Date</strong> <br />
+          {{film.releaseDate}} <br />
+          <strong>Réalisateur</strong> <br />
+          {{film.realisator}} <br />
+          <strong>Producteur</strong> <br />
+          {{film.productor}} <br />
+          <strong>Musique</strong> <br />
+          {{film.music}} <br />
+          <strong>Scénario</strong> <br />
+          {{film.scenario}} <br />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <strong>Pays</strong><br />
+          {{film.country}} <br />
+        </ion-col>
+        <ion-col>
+          <strong>Durée</strong> <br />
+          {{film.time}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <strong>Résumé</strong> <br />
+          <p>{{film.synopsis}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="modif && film">
+    <ion-item>
+      <ion-label>Affiche</ion-label>
+      <ion-input type="text" [(ngModel)]="film.pictureLink"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Titre</ion-label>
+      <ion-input type="text" [(ngModel)]="film.title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Pays</ion-label>
+      <ion-input type="text" [(ngModel)]="film.country"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-input type="text" [(ngModel)]="film.releaseDate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Réalisateur</ion-label>
+      <ion-input type="text" [(ngModel)]="film.realisator"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Producteur</ion-label>
+      <ion-input type="text" [(ngModel)]="film.productor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Musique</ion-label>
+      <ion-input type="text" [(ngModel)]="film.music"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Scénario</ion-label>
+      <ion-input type="text" [(ngModel)]="film.scenario"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Durée</ion-label>
+      <ion-input type="text" [(ngModel)]="film.time"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Au cinéma ?</ion-label>
+      <ion-toggle [(ngModel)]="film.onAir"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Synopsis</ion-label>
+      <ion-textarea rows="20" [(ngModel)]="film.synopsis"></ion-textarea>
+    </ion-item>
+    <p class="text-center">
+      <ion-button (click)="onModif()">Modifier</ion-button>
+    </p>
+  </div>
+</ion-content>
