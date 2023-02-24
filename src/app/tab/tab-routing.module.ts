@@ -9,32 +9,41 @@ const routes: Routes = [
     component: TabPage,
     children: [
       {
-        path: 'home',
+        path: 'day',
         loadChildren: () =>
-          import('../home/home.module').then((m) => m.HomePageModule),
+          import('../day/day.module').then((m) => m.DayPageModule),
       },
       {
-        path: 'films',
+        path: 'events',
         loadChildren: () =>
-          import('../film-list/film-list.module').then(
-            (m) => m.FilmListPageModule
+          import('../event-list/event-list.module').then(
+            (m) => m.EventListPageModule
           ),
       },
       {
-        path: 'about',
+        path: 'calendar',
         loadChildren: () =>
-          import('../about/about.module').then((m) => m.AboutPageModule),
+          import('../month/month.module').then((m) => m.MonthPageModule),
       },
       {
-        path: 'photos',
+        path: 'add',
         loadChildren: () =>
-          import('../photos/photos.module').then((m) => m.PhotosPageModule),
+          import('../event-add/event-add.module').then(
+            (m) => m.EventAddPageModule
+          ),
+      },
+      {
+        path: 'edit/:id',
+        loadChildren: () =>
+          import('../event-edit/event-edit.module').then(
+            (m) => m.EventEditPageModule
+          ),
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: '/tabs/day',
     pathMatch: 'full',
   },
 ];

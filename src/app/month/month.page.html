@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="onPreviousMonth()">Previous</ion-button>
+    </ion-buttons>
+    <ion-title>{{ getMonth() }} - {{ getYear() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onNextMonth()">Next</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let weekday of getWeekdays()" class="weekday">
+        <ion-text>{{ weekday }}</ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let i of range(0, rows)">
+      <ion-col
+        *ngFor="let j of range(i * 7, i * 7 + 7)"
+        class="day"
+        [ngClass]="{'active-day': isActiveMonth(days[j].date), 'disabled-day' : !isActiveMonth(days[j].date), today: days[j].isToday }"
+        (click)="handleClick(days[j].date)"
+      >
+        <ion-text>{{ days[j].date.getDate() }}</ion-text>
+        <ion-text *ngIf="days[j].events.length !== 0" class="event-counter">
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

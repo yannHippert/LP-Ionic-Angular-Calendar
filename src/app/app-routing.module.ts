@@ -7,8 +7,20 @@ const routes: Routes = [
     loadChildren: () => import('./tab/tab.module').then((m) => m.TabPageModule),
   },
   {
-    path: 'photos',
-    loadChildren: () => import('./photos/photos.module').then( m => m.PhotosPageModule)
+    path: 'day',
+    loadChildren: () => import('./day/day.module').then((m) => m.DayPageModule),
+  },
+  {
+    path: 'month',
+    loadChildren: () =>
+      import('./month/month.module').then((m) => m.MonthPageModule),
+  },
+  {
+    path: 'event/edit/:id',
+    loadChildren: () =>
+      import('./event-edit/event-edit.module').then(
+        (m) => m.EventEditPageModule
+      ),
   },
 ];
 

@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ getDate() }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="time-grid">
+    <ion-row *ngFor="let hour of hours" class="time-slot">
+      <ion-col>
+        <ion-text>{{ hour }}</ion-text>
+      </ion-col>
+    </ion-row>
+
+    <app-day-event *ngFor="let event of events" [event]="event">
+    </app-day-event>
+
+    <ion-row
+      class="time-display"
+      [ngStyle]="{ top: getTimeOffset() }"
+      #currentTimeElement
+    >
+      <ion-text>{{ currentTime }}</ion-text>
+    </ion-row>
+  </ion-grid>
+</ion-content>

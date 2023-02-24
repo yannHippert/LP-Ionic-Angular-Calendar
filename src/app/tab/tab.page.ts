@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tab.page.scss'],
 })
 export class TabPage implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  onClick(e: any) {
+    console.log(e);
   }
-
 }

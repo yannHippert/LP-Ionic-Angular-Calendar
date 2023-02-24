@@ -1,0 +1,20 @@
+@import "~/src/vars.scss";
+
+.button {
+  margin-top: 0.5rem;
+  border: 1px solid $highlight-color;
+  color: $highlight-color;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: $highlight-color;
+  color: $text-color;
+}
+
+.button:focus {
+  box-shadow: 0 0 0 3px rgba($highlight-color, 0.5);
+}

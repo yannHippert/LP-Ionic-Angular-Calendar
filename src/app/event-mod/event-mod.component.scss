@@ -1,0 +1,12 @@
+@import "src/vars.scss";
+@import "src/styles/switch.scss";
+
+ion-item {
+  margin: 0;
+  padding: 0 1rem 0 0;
+  input[type="date"],
+  input[type="time"],
+  input[type="color"] {
+    cursor: pointer;
+  }
+}

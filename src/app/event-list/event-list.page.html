@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>All events</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let day of days">
+      <ion-item-divider *ngIf="isToday(day.date)" #todayElem>
+        <ion-label class="day-date today">
+          Today {{ getLongDateString(day.date) }}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item-divider *ngIf="!isToday(day.date)" #todayElem>
+        <ion-label class="day-date">
+          {{ getLongDateString(day.date) }}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item *ngIf="day.events.length === 0" class="ion-no-padding">
+        <ion-text>No events</ion-text>
+      </ion-item>
+      <ion-item
+        class="event ion-no-padding"
+        *ngFor="let event of day.events"
+        [style.--bg-color]="getBgColor(event)"
+        (click)="onEventClick(event)"
+      >
+        <ion-col>
+          <ion-text>{{ event.name }}</ion-text>
+        </ion-col>
+        <ion-col size="2">
+          <ion-row>
+            <ion-text>{{ getStartTime(event) }}</ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-text>{{ getEndTime(event) }}</ion-text>
+          </ion-row>
+        </ion-col>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

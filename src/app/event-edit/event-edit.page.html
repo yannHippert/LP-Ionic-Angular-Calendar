@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/day"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit the event</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-event-mod [event]="event"></app-event-mod>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="success" (click)="onUpdate()"> Update </ion-button>
+      </ion-col>
+
+      <ion-col>
+        <ion-button (click)="onCancel()"> Cancel </ion-button>
+      </ion-col>
+
+      <ion-col>
+        <ion-button color="danger" (click)="onDelete()"> Delete </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

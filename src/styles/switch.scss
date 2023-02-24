@@ -1,0 +1,70 @@
+@import "~/src/vars.scss";
+
+$width: 50px;
+$space-around: 3px;
+$button-size: 22px; // $width / 2 - $space-around
+$height: 28px; // $button-size + 2 * $space-around
+
+.switch-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch {
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  width: $width;
+  height: $height;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $light-color;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: $button-size;
+  width: $button-size;
+  left: $space-around;
+  bottom: $space-around;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: $highlight-color;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX($button-size);
+  -ms-transform: translateX($button-size);
+  transform: translateX($button-size);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

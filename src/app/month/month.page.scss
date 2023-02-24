@@ -1,0 +1,49 @@
+@import "~/src/vars.scss";
+
+.day {
+  aspect-ratio: 1/1;
+  display: grid;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin: 2px;
+}
+
+.disabled-day {
+  background-color: rgba($text-color, 0.5);
+  color: $light-color;
+  .event-counter {
+    background-color: $light-color;
+  }
+}
+
+.active-day {
+  background-color: lightblue;
+  font-weight: 700;
+  color: $dark-color;
+  cursor: pointer;
+  .event-counter {
+    background-color: $light-color;
+  }
+}
+
+.today {
+  background-color: $highlight-color;
+  color: $text-color;
+}
+
+.weekday {
+  text-align: center;
+}
+
+.event-counter {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  height: 8px;
+  aspect-ratio: 1/1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  border-radius: 50%;
+}

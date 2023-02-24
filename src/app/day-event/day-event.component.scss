@@ -1,0 +1,32 @@
+@import "~/src/vars.scss";
+
+.event {
+  box-sizing: border-box;
+  padding: 0.2rem 0.5rem;
+  width: calc(100% - 50px - 20px);
+  border-left: 2px solid var(--bg-color);
+  position: absolute;
+  left: 60px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.event::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-color);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.allday {
+  top: 0;
+}
+
+.allday::before {
+  opacity: 1 !important;
+}

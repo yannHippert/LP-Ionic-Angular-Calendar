@@ -4,14 +4,13 @@
 
 export const environment = {
   firebase: {
-    projectId: 'films-2f0bc',
-    appId: '1:484816020469:web:b810508c4ea7c4aba1b6bc',
-    databaseURL: 'https://films-2f0bc-default-rtdb.firebaseio.com',
-    storageBucket: 'films-2f0bc.appspot.com',
-    locationId: 'europe-west',
-    apiKey: 'AIzaSyBvVaCQW19mHbJRd0CdbGLtIKUajnwuZaw',
-    authDomain: 'films-2f0bc.firebaseapp.com',
-    messagingSenderId: '484816020469',
+    databaseURL: 'https://calendar-bb05f-default-rtdb.firebaseio.com',
+    apiKey: 'AIzaSyBAeq87F2EQUVsEe6hwecAjXM3lbAsh708',
+    authDomain: 'calendar-bb05f.firebaseapp.com',
+    projectId: 'calendar-bb05f',
+    storageBucket: 'calendar-bb05f.appspot.com',
+    messagingSenderId: '559860092811',
+    appId: '1:559860092811:web:4a067a85a5b12268cda98e',
   },
   production: false,
 };

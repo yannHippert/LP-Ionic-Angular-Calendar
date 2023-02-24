@@ -1,0 +1,21 @@
+<ion-row
+  *ngIf="!event.isAllDay"
+  [ngStyle]="{
+    height: getHeight(),
+    top: getTopOffset()
+  }"
+  [style.--bg-color]="getBgColor()"
+  class="event"
+  (click)="onClick()"
+>
+  <ion-text>{{ event.name }}</ion-text>
+</ion-row>
+
+<ion-row
+  *ngIf="event.isAllDay"
+  class="event allday"
+  [style.--bg-color]="getBgColor()"
+  (click)="onClick()"
+>
+  <ion-text><b>All-day:</b> {{ event.name }}</ion-text>
+</ion-row>

@@ -1,8 +1,7 @@
 {
-  "name": "mon-projet-ionic",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "name": "lp-ionic-calendar",
+  "version": "1.0.0",
+  "author": "Hippert Yann",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -68,5 +67,5 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.2.4"
   },
-  "description": "An Ionic project"
+  "description": "An ionic calendar app"
 }

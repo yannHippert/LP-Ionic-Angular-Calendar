@@ -1,0 +1,17 @@
+@import "~/src/vars.scss";
+
+.day-date {
+  font-size: 1.2rem;
+  text-align: left;
+  color: $text-color;
+  text-decoration: underline;
+}
+
+.today {
+  color: $highlight-color;
+}
+
+.event {
+  margin-left: 1rem;
+  border-left: 4px solid var(--bg-color);
+}

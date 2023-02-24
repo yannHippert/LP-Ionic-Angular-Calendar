@@ -1,0 +1,58 @@
+<ion-list>
+  <ion-item [ngClass]="{ 'ion-invalid': isInvalidName() }">
+    <ion-label position="stacked">Title</ion-label>
+    <ion-input
+      minlength="2"
+      [clearInput]="true"
+      type="text"
+      class="form-control"
+      [(ngModel)]="event.name"
+    ></ion-input>
+    <ion-note slot="error">Invalid email</ion-note>
+  </ion-item>
+
+  <ion-item class="switch-container">
+    <ion-label position="fixed">All-day</ion-label>
+    <label class="switch" slot="end">
+      <input type="checkbox" [(ngModel)]="allDay" (change)="onAllDayChange()" />
+      <span class="slider round"></span>
+    </label>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Date</ion-label>
+    <input
+      slot="end"
+      type="date"
+      [(ngModel)]="startDateString"
+      (change)="onDateChange()"
+    />
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Start-time</ion-label>
+    <input
+      slot="end"
+      [disabled]="allDay"
+      type="time"
+      [(ngModel)]="startTimeString"
+      (change)="onDateChange()"
+    />
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">End-time</ion-label>
+    <input
+      slot="end"
+      [disabled]="allDay"
+      type="time"
+      [(ngModel)]="endTimeString"
+      (change)="onDateChange()"
+    />
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Event-color</ion-label>
+    <input slot="end" type="color" [(ngModel)]="event.color" />
+  </ion-item>
+</ion-list>

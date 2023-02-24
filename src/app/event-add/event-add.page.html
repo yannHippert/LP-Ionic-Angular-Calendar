@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add an event</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-event-mod [event]="event"></app-event-mod>
+
+  <ion-list>
+    <ion-button color="success" (click)="onCreate()"> Create </ion-button>
+  </ion-list>
+</ion-content>
