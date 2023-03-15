@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { IBaseEvent } from '@models/event.model';
 import {
   getDateString,
@@ -12,19 +12,14 @@ import { variables } from 'src/utils/vars';
   templateUrl: './event-mod.component.html',
   styleUrls: ['./event-mod.component.scss'],
 })
-export class EventModComponent implements OnInit {
+export class EventModComponent {
   @Input() event!: IBaseEvent;
   allDay: boolean = false;
   startDateString: string = '';
   startTimeString: string = '';
   endTimeString: string = '';
 
-  constructor() {}
-
-  /**
-   * Handles the initial setup of the component.
-   */
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges) {
     if (!this.event.color) this.event.color = variables.color.highlight;
     const startDate = this.event.startDate.toDate();
     const endDate = this.event.endDate.toDate();

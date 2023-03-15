@@ -46,7 +46,6 @@ export class EventEditPage implements OnInit {
   loadEvent(id: string): void {
     this.EventService.get(id).subscribe(
       (event: IEvent) => {
-        console.log(event);
         this.event = event;
       }
       //() => this.redirect(new Date())
