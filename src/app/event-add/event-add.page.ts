@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IBaseEvent } from '../models/event.model';
-import { EventService } from '../services/event/event.service';
+import { IBaseEvent } from '@models/event.model';
+import { EventService } from '@services/event/event.service';
 import { getDateString, getTimestamp } from 'src/utils/date';
 import { variables } from 'src/utils/vars';
 

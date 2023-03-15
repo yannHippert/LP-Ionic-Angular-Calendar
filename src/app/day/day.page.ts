@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IEvent } from '../models/event.model';
-import { EventService } from '../services/event/event.service';
+import { IEvent } from '@models/event.model';
+import { EventService } from '@services/event/event.service';
 import { interval } from 'rxjs';
 import { getTimeSlots, getTimeString } from 'src/utils/date';
 

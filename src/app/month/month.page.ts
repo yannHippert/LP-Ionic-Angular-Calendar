@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEvent } from '../models/event.model';
-import { IDay } from '../models/day.model';
-//import { EventService } from '../services/event/event.service';
+import { IEvent } from '@models/event.model';
+import { IDay } from '@models/day.model';
+import { EventService } from '@services/event/event.service';
 import {
   getDateString,
   getMonthString,
@@ -13,9 +13,7 @@ import {
   isSameDay,
   isSameMonth,
   isToday,
-  weekdays,
 } from 'src/utils/date';
-import { EventService } from '../services/event/event.service';
 
 @Component({
   selector: 'app-month',

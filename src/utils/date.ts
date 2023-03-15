@@ -158,18 +158,6 @@ export const getMonthString = (date: Date): string => {
 };
 
 /**
- * Creates a firebase timestamp from a given date.
- *
- * @param date The date to create the timestamp from
- * @returns The timestamp created from the date
- */
-/*
-export const getTimestamp = (date: Date): firebase.firestore.Timestamp => {
-  return firebase.firestore.Timestamp.fromDate(date);
-};
-*/
-
-/**
  * @returns An array of string containing all the hour marks of a day.
  */
 export const getTimeSlots = (): Array<string> => {

@@ -5,9 +5,8 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/firestore';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { IBaseEvent, IEvent } from 'src/app/models/event.model';
+import { IBaseEvent, IEvent } from '@models/event.model';
 import { getNextDay, getPreviousDay, getTimestamp } from 'src/utils/date';
 
 @Injectable({

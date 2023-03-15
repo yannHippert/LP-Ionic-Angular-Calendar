@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IBaseEvent } from '../models/event.model';
+import { IBaseEvent } from '@models/event.model';
 import {
   getDateString,
   getTimestamp,
