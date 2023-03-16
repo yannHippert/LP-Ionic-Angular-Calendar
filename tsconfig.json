@@ -21,7 +21,7 @@
     "useDefineForClassFields": false,
     "paths": {
       "@models/*": ["src/models/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/app/services/*"]
     }
   },
   "angularCompilerOptions": {
