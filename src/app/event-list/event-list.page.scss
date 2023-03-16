@@ -5,6 +5,7 @@
   text-align: left;
   color: $text-color;
   text-decoration: underline;
+  padding: 1rem 0 0.5rem;
 }
 
 .today {
@@ -14,4 +15,8 @@
 .event {
   margin-left: 1rem;
   border-left: 4px solid var(--bg-color);
+}
+
+.no-events {
+  margin-left: 1rem;
 }

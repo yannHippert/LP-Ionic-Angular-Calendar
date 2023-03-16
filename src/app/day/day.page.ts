@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IEvent } from '@models/event.model';
 import { EventService } from '@services/event/event.service';
 import { interval } from 'rxjs';
@@ -13,18 +13,15 @@ import { getTimeSlots, getTimeString } from 'src/utils/date';
 export class DayPage implements OnInit {
   date!: Date;
   events: Array<IEvent> = [];
-  hours: Array<string> = [];
+  hours: Array<string> = getTimeSlots();
   currentTime!: string;
 
   constructor(
     private EventService: EventService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.hours = getTimeSlots();
-
     this.route.params.subscribe((params) => {
       this.date =
         params['date'] === 'today' ? new Date() : new Date(params['date']);

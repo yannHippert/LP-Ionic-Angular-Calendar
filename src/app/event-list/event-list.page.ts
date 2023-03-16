@@ -9,6 +9,7 @@ import {
   isToday,
 } from 'src/utils/date';
 import { variables } from 'src/utils/vars';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-list',
@@ -20,7 +21,7 @@ export class EventListPage implements OnInit {
 
   @ViewChild('todayElem', { read: ElementRef }) todayElemRef!: ElementRef;
 
-  constructor(private EventService: EventService) {}
+  constructor(private EventService: EventService, private router: Router) {}
 
   /**
    * Handles the initial setup of the component,
@@ -68,8 +69,9 @@ export class EventListPage implements OnInit {
    * Not working...
    */
   ngAfterViewInit() {
-    console.log(this.todayElemRef);
-    //this.todayElem.nativeElement.scrollIntoView();
+    setTimeout(() => {
+      if (this.todayElemRef) this.todayElemRef.nativeElement.scrollIntoView();
+    }, 250);
   }
 
   /**
@@ -107,11 +109,21 @@ export class EventListPage implements OnInit {
     )}`;
   }
 
+  /**
+   * Get the color of an event or the default color if the event has none.
+   *
+   * @param event The event to get the color of
+   * @returns The color of the event or the default color
+   */
   getBgColor(event: IEvent): string {
     return event.color || variables.color.highlight;
   }
 
+  /**
+   *
+   * @param event
+   */
   onEventClick(event: IEvent) {
-    console.log(event.name);
+    this.router.navigate(['event/edit/' + event.id]);
   }
 }

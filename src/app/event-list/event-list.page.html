@@ -12,12 +12,15 @@
           Today {{ getLongDateString(day.date) }}
         </ion-label>
       </ion-item-divider>
-      <ion-item-divider *ngIf="!isToday(day.date)" #todayElem>
+      <ion-item-divider *ngIf="!isToday(day.date)">
         <ion-label class="day-date">
           {{ getLongDateString(day.date) }}
         </ion-label>
       </ion-item-divider>
-      <ion-item *ngIf="day.events.length === 0" class="ion-no-padding">
+      <ion-item
+        *ngIf="day.events.length === 0"
+        class="ion-no-padding no-events"
+      >
         <ion-text>No events</ion-text>
       </ion-item>
       <ion-item
