@@ -20,22 +20,10 @@ export class EventService {
     this.eventsRef = db.collection(this.dbPath);
   }
 
-  getAll(): any {
-    return new Observable((obs) => {
-      this.db
-        .collection(this.dbPath, (ref) => ref.orderBy('startDate'))
-        .get()
-        .pipe(
-          map((querySnapshot) =>
-            querySnapshot.docs.map((doc: any) => {
-              return { id: doc.id, ...doc.data() };
-            })
-          )
-        )
-        .subscribe((documents) => {
-          obs.next(documents);
-        });
-    });
+  getAll(): Observable<any> {
+    return this.getObservable(
+      this.db.collection(this.dbPath, (ref) => ref.orderBy('startDate'))
+    );
   }
 
   getOfDate(date: Date): Observable<any> {
@@ -50,25 +38,13 @@ export class EventService {
     const previousTimestamp = getTimestamp(previousDay);
     const nextTimestamp = getTimestamp(nextDay);
 
-    return new Observable((obs) => {
-      this.db
-        .collection(this.dbPath, (ref) =>
-          ref
-            .where('startDate', '>', previousTimestamp)
-            .where('startDate', '<', nextTimestamp)
-        )
-        .get()
-        .pipe(
-          map((querySnapshot) =>
-            querySnapshot.docs.map((doc: any) => {
-              return { id: doc.id, ...doc.data() };
-            })
-          )
-        )
-        .subscribe((documents) => {
-          obs.next(documents);
-        });
-    });
+    return this.getObservable(
+      this.db.collection(this.dbPath, (ref) =>
+        ref
+          .where('startDate', '>', previousTimestamp)
+          .where('startDate', '<', nextTimestamp)
+      )
+    );
   }
 
   getOfMonth(date: Date): Observable<any> {
@@ -88,28 +64,26 @@ export class EventService {
       0
     );
 
-    const previousTimestamp = getTimestamp(previousMonth);
-    const nextTimestamp = getTimestamp(nextMonth);
+    return this.getObservable(
+      this.db.collection(this.dbPath, (ref) =>
+        ref
+          .where('startDate', '>', getTimestamp(previousMonth))
+          .where('startDate', '<', getTimestamp(nextMonth))
+      )
+    );
+  }
 
-    return new Observable((obs) => {
-      this.db
-        .collection(this.dbPath, (ref) =>
-          ref
-            .where('startDate', '>', previousTimestamp)
-            .where('startDate', '<', nextTimestamp)
-        )
-        .get()
-        .pipe(
-          map((querySnapshot) =>
-            querySnapshot.docs.map((doc: any) => {
-              return { id: doc.id, ...doc.data() };
-            })
-          )
-        )
-        .subscribe((documents) => {
-          obs.next(documents);
-        });
-    });
+  private getObservable(dataCall: AngularFirestoreCollection<unknown>) {
+    return dataCall.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map(({ payload }: any) => {
+          return {
+            id: payload.doc.id,
+            ...payload.doc.data(),
+          };
+        })
+      )
+    );
   }
 
   get(id: any): any {
@@ -124,33 +98,15 @@ export class EventService {
     });
   }
 
-  add(event: IBaseEvent): any {
-    return new Observable((obs) => {
-      this.eventsRef.add({ ...event }).then(() => {
-        obs.next();
-      });
-    });
+  add(event: IBaseEvent): Promise<any> {
+    return this.eventsRef.add({ ...event });
   }
 
-  update(event: IEvent) {
-    return new Observable((obs) => {
-      this.eventsRef
-        .doc(event.id)
-        .update(event)
-        .then(() => {
-          obs.next();
-        });
-    });
+  update(event: IEvent): Promise<any> {
+    return this.eventsRef.doc(event.id).update(event);
   }
 
-  delete(id: string) {
-    return new Observable((obs) => {
-      this.eventsRef
-        .doc(id)
-        .delete()
-        .then(() => {
-          obs.next();
-        });
-    });
+  delete(id: string): Promise<any> {
+    return this.eventsRef.doc(id).delete();
   }
 }

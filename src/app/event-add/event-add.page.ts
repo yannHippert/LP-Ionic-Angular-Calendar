@@ -40,7 +40,7 @@ export class EventAddPage implements OnInit {
    */
   onCreate() {
     if (this.event.name.trim().length > 0)
-      this.EventService.add(this.event).subscribe(() => {
+      this.EventService.add(this.event).then(() => {
         this.router.navigate([
           'tabs/day/' + getDateString(this.event.startDate.toDate()),
         ]);

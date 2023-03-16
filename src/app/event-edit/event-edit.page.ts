@@ -45,9 +45,7 @@ export class EventEditPage implements OnInit {
    */
   loadEvent(id: string): void {
     this.EventService.get(id).subscribe(
-      (event: IEvent) => {
-        this.event = event;
-      }
+      (event: IEvent) => (this.event = event)
       //() => this.redirect(new Date())
     );
   }
@@ -57,7 +55,7 @@ export class EventEditPage implements OnInit {
    */
   onUpdate() {
     if (this.event.name.trim().length > 0) {
-      this.EventService.update(this.event).subscribe(() => {
+      this.EventService.update(this.event).then(() => {
         this.navCtrl.back();
       });
     }
@@ -76,7 +74,7 @@ export class EventEditPage implements OnInit {
    * to the view of the day of the event.
    */
   onDelete() {
-    this.EventService.delete(this.event.id).subscribe(() => {
+    this.EventService.delete(this.event.id).then(() => {
       this.navCtrl.back();
     });
   }

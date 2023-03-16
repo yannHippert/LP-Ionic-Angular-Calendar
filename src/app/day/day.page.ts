@@ -27,7 +27,7 @@ export class DayPage implements OnInit {
         params['date'] === 'today' ? new Date() : new Date(params['date']);
       if (isNaN(this.date.getTime())) this.date = new Date();
       this.EventService.getOfDate(this.date).subscribe(
-        (events: Array<any>) => (this.events = events)
+        (events: Array<IEvent>) => (this.events = events)
       );
     });
 

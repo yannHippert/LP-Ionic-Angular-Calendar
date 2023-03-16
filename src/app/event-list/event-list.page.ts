@@ -31,12 +31,13 @@ export class EventListPage implements OnInit {
     this.EventService.getAll().subscribe((events: Array<IEvent>) => {
       let hasToday = false;
       let day: undefined | IDay = undefined;
+      const days = [];
       events.forEach((event: IEvent) => {
         if (
           day === undefined ||
           !isSameDay(day.date, event.startDate.toDate())
         ) {
-          if (day !== undefined) this.days.push(day);
+          if (day !== undefined) days.push(day);
 
           if (!hasToday) hasToday = isToday(event.startDate.toDate());
           day = {
@@ -47,12 +48,12 @@ export class EventListPage implements OnInit {
           day.events.push(event);
         }
       });
-      if (day !== undefined) this.days.push(day);
+      if (day !== undefined) days.push(day);
 
       // If today has no event, creates a day for today anyway and sorts
       // the days again.
       if (!hasToday) {
-        this.days.push({
+        days.push({
           date: new Date(),
           events: [],
         });
@@ -61,6 +62,8 @@ export class EventListPage implements OnInit {
           (a: IDay, b: IDay) => a.date.getTime() - b.date.getTime()
         );
       }
+
+      this.days = days;
     });
   }
 
