@@ -1,0 +1,34 @@
+{
+  "database": "dbCalendar",
+  "version": 1,
+  "encrypted": false,
+  "mode": "full",
+  "tables": [
+    {
+      "name": "tblEvents",
+      "schema": [
+        {
+          "column": "id",
+          "value": "VARCHAR(255) PRIMARY KEY NOT NULL"
+        },
+        {
+          "column": "name",
+          "value": "VARCHAR(255) NOT NULL"
+        },
+        {
+          "column": "startDate",
+          "value": "BIGINT UNSIGNED NOT NULL"
+        },
+        {
+          "column": "endDate",
+          "value": "BIGINT UNSIGNED NOT NULL"
+        },
+        {
+          "column": "color",
+          "value": "VARCHAR(255) NULL"
+        }
+      ],
+      "values": []
+    }
+  ]
+}

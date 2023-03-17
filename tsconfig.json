@@ -19,6 +19,8 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "useDefineForClassFields": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@models/*": ["src/models/*"],
       "@services/*": ["src/app/services/*"]
