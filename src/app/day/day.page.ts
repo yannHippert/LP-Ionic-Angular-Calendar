@@ -4,6 +4,7 @@ import { IEvent } from '@models/event.model';
 import { EventService } from '@services/event/event.service';
 import { interval } from 'rxjs';
 import { getTimeSlots, getTimeString } from 'src/utils/date';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-day',
@@ -18,7 +19,8 @@ export class DayPage implements OnInit {
 
   @ViewChild('currentTimeElement', { read: ElementRef })
   currentTimeElement!: ElementRef;
-  hasScrolled = false;
+  @ViewChild(IonContent) content!: IonContent;
+  hasScrolled: boolean = false;
 
   constructor(
     private EventService: EventService,
@@ -45,16 +47,8 @@ export class DayPage implements OnInit {
   ngAfterViewChecked() {
     if (!this.hasScrolled && this.currentTimeElement) {
       const element = this.currentTimeElement.nativeElement;
-      element.scrollIntoView({ behavior: 'smooth' });
-      const rect = element.getBoundingClientRect();
-      console.log(
-        rect.top >= 0 && rect.bottom < window.innerHeight,
-        rect.top,
-        rect.bottom
-      );
-      if (rect.top >= 0 && rect.bottom < window.innerHeight) {
-        this.hasScrolled = true;
-      }
+      this.content.scrollToPoint(0, element.offsetTop, 500);
+      setTimeout(() => (this.hasScrolled = true), 250);
     }
   }
 

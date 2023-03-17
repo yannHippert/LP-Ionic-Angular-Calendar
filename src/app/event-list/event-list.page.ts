@@ -10,6 +10,7 @@ import {
 } from 'src/utils/date';
 import { variables } from 'src/utils/vars';
 import { Router } from '@angular/router';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-event-list',
@@ -19,8 +20,9 @@ import { Router } from '@angular/router';
 export class EventListPage implements OnInit {
   days: Array<IDay> = [];
 
+  @ViewChild(IonContent) content!: IonContent;
   @ViewChild('todayElem', { read: ElementRef }) todayElemRef!: ElementRef;
-  hasScrolled = false;
+  hasScrolled: boolean = false;
 
   constructor(private EventService: EventService, private router: Router) {}
 
@@ -72,11 +74,8 @@ export class EventListPage implements OnInit {
   ngAfterViewChecked() {
     if (!this.hasScrolled && this.todayElemRef) {
       const element = this.todayElemRef.nativeElement;
-      element.scrollIntoView({ behavior: 'smooth' });
-      const rect = element.getBoundingClientRect();
-      if (rect.top >= 0 && rect.bottom > window.innerHeight) {
-        this.hasScrolled = true;
-      }
+      this.content.scrollToPoint(0, element.offsetTop, 500);
+      setTimeout(() => (this.hasScrolled = true), 250);
     }
   }
 
