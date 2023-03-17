@@ -20,6 +20,7 @@ export class EventListPage implements OnInit {
   days: Array<IDay> = [];
 
   @ViewChild('todayElem', { read: ElementRef }) todayElemRef!: ElementRef;
+  hasScrolled = false;
 
   constructor(private EventService: EventService, private router: Router) {}
 
@@ -58,9 +59,7 @@ export class EventListPage implements OnInit {
           events: [],
         });
 
-        this.days.sort(
-          (a: IDay, b: IDay) => a.date.getTime() - b.date.getTime()
-        );
+        days.sort((a: IDay, b: IDay) => a.date.getTime() - b.date.getTime());
       }
 
       this.days = days;
@@ -68,13 +67,17 @@ export class EventListPage implements OnInit {
   }
 
   /**
-   * Attempt to scroll to the current day.
-   * Not working...
+   * Scroll current day into view
    */
-  ngAfterViewInit() {
-    setTimeout(() => {
-      if (this.todayElemRef) this.todayElemRef.nativeElement.scrollIntoView();
-    }, 250);
+  ngAfterViewChecked() {
+    if (!this.hasScrolled && this.todayElemRef) {
+      const element = this.todayElemRef.nativeElement;
+      element.scrollIntoView({ behavior: 'smooth' });
+      const rect = element.getBoundingClientRect();
+      if (rect.top >= 0 && rect.bottom > window.innerHeight) {
+        this.hasScrolled = true;
+      }
+    }
   }
 
   /**

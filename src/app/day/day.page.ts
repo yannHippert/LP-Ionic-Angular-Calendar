@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IEvent } from '@models/event.model';
 import { EventService } from '@services/event/event.service';
@@ -15,6 +15,10 @@ export class DayPage implements OnInit {
   events: Array<IEvent> = [];
   hours: Array<string> = getTimeSlots();
   currentTime!: string;
+
+  @ViewChild('currentTimeElement', { read: ElementRef })
+  currentTimeElement!: ElementRef;
+  hasScrolled = false;
 
   constructor(
     private EventService: EventService,
@@ -33,6 +37,25 @@ export class DayPage implements OnInit {
 
     this.currentTime = this.getCurrentTime();
     interval(1000).subscribe(() => (this.currentTime = this.getCurrentTime()));
+  }
+
+  /**
+   * Attempt to scroll to the current day.
+   */
+  ngAfterViewChecked() {
+    if (!this.hasScrolled && this.currentTimeElement) {
+      const element = this.currentTimeElement.nativeElement;
+      element.scrollIntoView({ behavior: 'smooth' });
+      const rect = element.getBoundingClientRect();
+      console.log(
+        rect.top >= 0 && rect.bottom < window.innerHeight,
+        rect.top,
+        rect.bottom
+      );
+      if (rect.top >= 0 && rect.bottom < window.innerHeight) {
+        this.hasScrolled = true;
+      }
+    }
   }
 
   /**
