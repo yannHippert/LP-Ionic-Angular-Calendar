@@ -8,6 +8,7 @@ import {
 import 'firebase/firestore';
 import { IBaseEvent, IEvent } from '@models/event.model';
 import { getNextDay, getPreviousDay, getTimestamp } from 'src/utils/date';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Injectable({
   providedIn: 'root',
@@ -99,7 +100,28 @@ export class EventService {
   }
 
   add(event: IBaseEvent): Promise<any> {
-    return this.eventsRef.add({ ...event });
+    return new Promise((resolve) => {
+      this.eventsRef.add({ ...event }).then((res) => {
+        const scheduledAt = new Date(Date.now() + 1000 * 10);
+        console.log(new Date(), scheduledAt);
+        LocalNotifications.schedule({
+          notifications: [
+            {
+              title: 'Title',
+              body: 'Body',
+              id: res.id.toHashCode(),
+              schedule: { at: scheduledAt },
+              sound: undefined,
+              attachments: undefined,
+              actionTypeId: '',
+              extra: null,
+            },
+          ],
+        }).then(() => console.log('Scheduled notification'));
+        console.log(res.id);
+        resolve(res);
+      });
+    });
   }
 
   update(event: IEvent): Promise<any> {
@@ -107,6 +129,26 @@ export class EventService {
   }
 
   delete(id: string): Promise<any> {
+    console.log(LocalNotifications.getPending());
     return this.eventsRef.doc(id).delete();
   }
 }
+
+declare global {
+  interface String {
+    toHashCode(): number;
+  }
+}
+
+String.prototype.toHashCode = function (): number {
+  var hash = 0,
+    i,
+    chr;
+  if (this.length === 0) return hash;
+  for (i = 0; i < this.length; i++) {
+    chr = this.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
