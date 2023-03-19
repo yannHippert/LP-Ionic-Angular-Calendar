@@ -9,6 +9,7 @@ import 'firebase/firestore';
 import { IBaseEvent, IEvent } from '@models/event.model';
 import { getNextDay, getPreviousDay, getTimestamp } from 'src/utils/date';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { getTimeString } from 'src/utils/date';
 
 @Injectable({
   providedIn: 'root',
@@ -107,8 +108,10 @@ export class EventService {
         LocalNotifications.schedule({
           notifications: [
             {
-              title: 'Title',
-              body: 'Body',
+              title: event.name,
+              body: `${getTimeString(
+                event.startDate.toDate()
+              )} - ${getTimeString(event.endDate.toDate())}`,
               id: res.id.toHashCode(),
               schedule: { at: scheduledAt },
               sound: undefined,

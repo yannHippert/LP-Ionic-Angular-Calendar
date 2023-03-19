@@ -47,7 +47,7 @@ export class DayPage implements OnInit {
   ngAfterViewChecked() {
     if (!this.hasScrolled && this.currentTimeElement) {
       const element = this.currentTimeElement.nativeElement;
-      this.content.scrollToPoint(0, element.offsetTop, 500);
+      this.content.scrollToPoint(0, element.offsetTop - 150, 500);
       setTimeout(() => (this.hasScrolled = true), 250);
     }
   }
