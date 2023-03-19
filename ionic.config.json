@@ -1,5 +1,5 @@
 {
-  "name": "base-ionic",
+  "name": "Ionic Calendar",
   "integrations": {
     "capacitor": {}
   },
