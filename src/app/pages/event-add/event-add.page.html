@@ -7,7 +7,11 @@
 <ion-content>
   <app-event-mod [event]="event"></app-event-mod>
 
-  <ion-list>
-    <ion-button color="success" (click)="onCreate()"> Create </ion-button>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="success" (click)="onCreate()">Create</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

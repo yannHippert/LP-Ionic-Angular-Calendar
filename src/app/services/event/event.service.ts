@@ -89,14 +89,10 @@ export class EventService {
 
   add(event: IBaseEvent): Promise<any> {
     return new Promise((resolve) => {
-      this.eventsRef.add({ ...event }).then((res) => {
-        if (event.notification === true) {
-          this.createNotification({ ...event, id: res.id }).then(() =>
-            resolve(res)
-          );
-        } else {
-          resolve(res);
-        }
+      this.eventsRef.add({ ...event }).then(async (res) => {
+        if (event.notification === true)
+          await this.createNotification({ ...event, id: res.id });
+        resolve(res);
       });
     });
   }

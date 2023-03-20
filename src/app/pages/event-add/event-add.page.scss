@@ -1,6 +1,13 @@
-ion-list {
+ion-grid {
   margin-top: 2rem;
-  display: flex;
-  justify-content: center;
+}
+
+ion-col {
+  display: grid;
+  align-items: center;
+}
+
+ion-row {
+  display: grid;
   align-items: center;
 }
