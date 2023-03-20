@@ -92,10 +92,10 @@ export class EventService {
   }
 
   add(event: IBaseEvent): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.eventsRef.add({ ...event }).then(async (res) => {
         if (event.notification === true)
-          await this.createNotification({ ...event, id: res.id });
+          await this.createNotification({ ...event, id: res.id }).catch(reject);
         resolve(res);
       });
     });
@@ -136,7 +136,7 @@ export class EventService {
         event.name
       } at ${event.startDate.toDate()}`
     );
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       await this.removeNotification(event.id);
       LocalNotifications.schedule({
         notifications: [
@@ -149,10 +149,12 @@ export class EventService {
             schedule: { at: event.startDate.toDate() },
           },
         ],
-      }).then(() => {
-        console.log('Notification scheduled');
-        resolve();
-      });
+      })
+        .then(() => {
+          console.log('Notification scheduled');
+          resolve();
+        })
+        .catch(reject);
     });
   };
 
@@ -166,10 +168,12 @@ export class EventService {
       ) {
         LocalNotifications.cancel({
           notifications: [{ id: id.toHashCode() }],
-        }).then(() => {
-          console.log('Notification removed');
-          resolve();
-        });
+        })
+          .then(() => {
+            console.log('Notification removed');
+            resolve();
+          })
+          .catch(reject);
       } else {
         resolve();
       }
