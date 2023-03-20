@@ -32,8 +32,8 @@ export class EventModComponent {
    * Checks if the name of the event is valid.
    * @returns A boolean indicating if the name is valid or not
    */
-  isInvalidName(): boolean {
-    return this.event.name.trim().length === 0;
+  isValidTitle(): boolean {
+    return this.event.name.trim().length > 0;
   }
 
   /**

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { eventFactory, IEvent } from 'src/app/models/event.model';
 import { EventService } from '@services/event/event.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-event-edit',
@@ -15,7 +15,8 @@ export class EventEditPage implements OnInit {
   constructor(
     private EventService: EventService,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private toastController: ToastController
   ) {}
 
   /**
@@ -25,6 +26,24 @@ export class EventEditPage implements OnInit {
     const id = this.route.snapshot.params['id'];
     this.event = eventFactory(id) as IEvent;
     this.loadEvent(id);
+  }
+
+  /**
+   * Checks if the name of the event is valid.
+   * @returns A boolean indicating if the name is valid or not
+   */
+  isValidTitle(): boolean {
+    return this.event.name.trim().length > 0;
+  }
+
+  async presentToast(message: string, isError: boolean = false) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'top',
+      color: isError ? 'danger' : 'success',
+    });
+    toast.present();
   }
 
   /**
@@ -44,10 +63,17 @@ export class EventEditPage implements OnInit {
    * Handles the updating of the event.
    */
   onUpdate() {
-    if (this.event.name.trim().length > 0) {
-      this.EventService.update(this.event).then(() => {
-        this.navCtrl.back();
-      });
+    if (this.isValidTitle()) {
+      this.EventService.update(this.event)
+        .then(() => {
+          this.presentToast('Event updated');
+          this.navCtrl.back();
+        })
+        .catch((error: any) => {
+          this.presentToast(error.message, true);
+        });
+    } else {
+      this.presentToast('The title cannot be empty', true);
     }
   }
 
@@ -64,8 +90,13 @@ export class EventEditPage implements OnInit {
    * to the view of the day of the event.
    */
   onDelete() {
-    this.EventService.delete(this.event.id).then(() => {
-      this.navCtrl.back();
-    });
+    this.EventService.delete(this.event.id)
+      .then(() => {
+        this.presentToast('Event deleted');
+        this.navCtrl.back();
+      })
+      .catch((error: any) => {
+        this.presentToast(error.message, true);
+      });
   }
 }

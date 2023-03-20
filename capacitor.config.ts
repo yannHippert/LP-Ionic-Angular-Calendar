@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'lu.hipya.calendar',
+  appId: 'io.ionic.starter',
   appName: 'Ionic Calendar',
   webDir: 'www',
   bundledWebRuntime: false,

@@ -10,6 +10,7 @@ import { IBaseEvent, IEvent } from '@models/event.model';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { getNextDay, getPreviousDay, getTimestamp } from '@utils/date';
 import { getTimeString } from '@utils/date';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,10 @@ export class EventService {
   private dbPath = '/events';
   eventsRef: AngularFirestoreCollection<any>;
 
-  constructor(private db: AngularFirestore) {
+  constructor(
+    private db: AngularFirestore,
+    private toastController: ToastController
+  ) {
     this.eventsRef = db.collection(this.dbPath);
   }
 
@@ -97,18 +101,20 @@ export class EventService {
     });
   }
 
-  update(event: IEvent): Promise<any> {
-    return Promise.all([
-      this.createNotification(event),
-      this.eventsRef.doc(event.id).update(event),
-    ]);
+  update(event: IEvent): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      await this.createNotification(event),
+        await this.eventsRef.doc(event.id).update(event),
+        resolve();
+    });
   }
 
-  delete(id: string): Promise<any> {
-    return Promise.all([
-      this.eventsRef.doc(id).delete(),
-      this.removeNotification(id),
-    ]);
+  delete(id: string): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      await this.eventsRef.doc(id).delete();
+      await this.removeNotification(id);
+      resolve();
+    });
   }
 
   private getObservable(dataCall: AngularFirestoreCollection<unknown>) {
