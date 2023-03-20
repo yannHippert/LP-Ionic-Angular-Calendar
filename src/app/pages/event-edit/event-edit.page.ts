@@ -36,14 +36,21 @@ export class EventEditPage implements OnInit {
     return this.event.name.trim().length > 0;
   }
 
-  async presentToast(message: string, isError: boolean = false) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 2000,
-      position: 'top',
-      color: isError ? 'danger' : 'success',
-    });
-    toast.present();
+  /**
+   * Function to display a toast message
+   *
+   * @param message the message to be shown in the toest
+   * @param isError boolean indiacting if it is an error message or not
+   */
+  presentToast(message: string, isError: boolean = false) {
+    this.toastController
+      .create({
+        message,
+        duration: 2000,
+        position: 'top',
+        color: isError ? 'danger' : 'success',
+      })
+      .then((toast) => toast.present());
   }
 
   /**
@@ -54,9 +61,12 @@ export class EventEditPage implements OnInit {
    * @param id The id of the event to be editted.
    */
   loadEvent(id: string): void {
-    this.EventService.get(id).subscribe(
-      (event: IEvent) => (this.event = event)
-    );
+    this.EventService.get(id)
+      .then((event: IEvent) => (this.event = event))
+      .catch((error: any) => {
+        this.presentToast(error.message, true);
+        this.navCtrl.back();
+      });
   }
 
   /**
@@ -69,9 +79,7 @@ export class EventEditPage implements OnInit {
           this.presentToast('Event updated');
           this.navCtrl.back();
         })
-        .catch((error: any) => {
-          this.presentToast(error.message, true);
-        });
+        .catch((error) => this.presentToast(error.message, true));
     } else {
       this.presentToast('The title cannot be empty', true);
     }
@@ -95,8 +103,6 @@ export class EventEditPage implements OnInit {
         this.presentToast('Event deleted');
         this.navCtrl.back();
       })
-      .catch((error: any) => {
-        this.presentToast(error.message, true);
-      });
+      .catch((error) => this.presentToast(error.message, true));
   }
 }

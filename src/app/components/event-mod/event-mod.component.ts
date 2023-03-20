@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { IBaseEvent } from '@models/event.model';
+import { NotificationService } from '@services/notification/notification.service';
 import {
   getDateString,
   getTimestamp,
@@ -7,6 +8,7 @@ import {
   isAllDay,
 } from '@utils/date';
 import { variables } from '@utils/vars';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-event-mod',
@@ -19,6 +21,11 @@ export class EventModComponent {
   startDateString: string = '';
   startTimeString: string = '';
   endTimeString: string = '';
+
+  constructor(
+    private notificationService: NotificationService,
+    private toastController: ToastController
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.event.color) this.event.color = variables.color.highlight;
@@ -106,5 +113,22 @@ export class EventModComponent {
 
     this.event.startDate = getTimestamp(startDate);
     this.event.endDate = getTimestamp(endDate);
+  }
+
+  onNotificationChange(): void {
+    this.notificationService
+      .areNotificationsEnabled()
+      .then(async (isEnabled) => {
+        if (!isEnabled) {
+          this.event.notification = false;
+          const toast = await this.toastController.create({
+            message: 'You have not enabled notifications',
+            duration: 2000,
+            position: 'top',
+            color: 'danger',
+          });
+          toast.present();
+        }
+      });
   }
 }

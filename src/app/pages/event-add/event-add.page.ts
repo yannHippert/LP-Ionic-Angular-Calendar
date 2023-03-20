@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { eventFactory, IBaseEvent } from 'src/app/models/event.model';
 import { EventService } from '@services/event/event.service';
-import { getDateString, getTimestamp } from 'src/utils/date';
+import { getDateString } from 'src/utils/date';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -14,7 +14,7 @@ export class EventAddPage {
   event: IBaseEvent = eventFactory();
 
   constructor(
-    private EventService: EventService,
+    private eventService: EventService,
     private router: Router,
     private toastController: ToastController
   ) {}
@@ -27,14 +27,21 @@ export class EventAddPage {
     return this.event.name.trim().length > 0;
   }
 
-  async presentToast(message: string, isError: boolean = false) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 2000,
-      position: 'top',
-      color: isError ? 'danger' : 'success',
-    });
-    toast.present();
+  /**
+   * Function to display a toast message
+   *
+   * @param message the message to be shown in the toest
+   * @param isError boolean indiacting if it is an error message or not
+   */
+  presentToast(message: string, isError: boolean = false) {
+    this.toastController
+      .create({
+        message,
+        duration: 2000,
+        position: 'top',
+        color: isError ? 'danger' : 'success',
+      })
+      .then((toast) => toast.present());
   }
 
   /**
@@ -43,7 +50,8 @@ export class EventAddPage {
    */
   onCreate() {
     if (this.isValidTitle()) {
-      this.EventService.add(this.event)
+      this.eventService
+        .add(this.event)
         .then(() => {
           this.presentToast('Event created');
           this.event = eventFactory();
@@ -51,9 +59,7 @@ export class EventAddPage {
             'tabs/day/' + getDateString(this.event.startDate.toDate()),
           ]);
         })
-        .catch((error: any) => {
-          this.presentToast(error.message, true);
-        });
+        .catch((error) => this.presentToast(error.message, true));
     } else {
       this.presentToast('The title cannot be empty', true);
     }

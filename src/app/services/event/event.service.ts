@@ -7,10 +7,9 @@ import {
 } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { IBaseEvent, IEvent } from '@models/event.model';
-import { LocalNotifications } from '@capacitor/local-notifications';
 import { getNextDay, getPreviousDay, getTimestamp } from '@utils/date';
 import { getTimeString } from '@utils/date';
-import { ToastController } from '@ionic/angular';
+import { NotificationService } from '@services/notification/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +20,7 @@ export class EventService {
 
   constructor(
     private db: AngularFirestore,
-    private toastController: ToastController
+    private notificationService: NotificationService
   ) {
     this.eventsRef = db.collection(this.dbPath);
   }
@@ -79,104 +78,86 @@ export class EventService {
     );
   }
 
-  get(id: any): any {
-    return new Observable((obs) => {
+  /**
+   * Get the event with a specific id
+   *
+   * @param id The id of the event to get
+   * @returns
+   */
+  get(id: string): Promise<IEvent> {
+    return new Promise((resolve, reject) => {
       this.eventsRef
         .doc(id)
         .get()
         .subscribe((res) => {
-          if (res.data() === undefined) obs.error();
-          else obs.next({ id, ...res.data() });
+          if (res.data() === undefined) reject({ message: 'Event not found!' });
+          else resolve({ id, ...res.data() });
         });
     });
   }
 
-  add(event: IBaseEvent): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.eventsRef.add({ ...event }).then(async (res) => {
-        if (event.notification === true)
-          await this.createNotification({ ...event, id: res.id }).catch(reject);
-        resolve(res);
-      });
+  add(baseEvent: IBaseEvent): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      if (baseEvent.notification === true) {
+        const areNotificationsEnabled =
+          await this.notificationService.areNotificationsEnabled();
+        if (areNotificationsEnabled) {
+          const res = await this.eventsRef.add({ ...baseEvent }).catch(reject);
+          if (res === undefined) return;
+          const event = { ...baseEvent, id: res.id };
+          await this.notificationService
+            .createNotification(event)
+            .catch(reject);
+          resolve(event);
+        }
+      } else {
+        this.eventsRef
+          .add({ ...baseEvent })
+          .then((res) => resolve({ ...baseEvent, id: res.id }))
+          .catch(reject);
+      }
     });
   }
 
   update(event: IEvent): Promise<void> {
     return new Promise(async (resolve, reject) => {
-      await this.createNotification(event),
-        await this.eventsRef.doc(event.id).update(event),
-        resolve();
+      if (event.notification === false) {
+        await this.notificationService.removeNotification(
+          event.id.toHashCode()
+        );
+        this.eventsRef.doc(event.id).update(event).then(resolve).catch(reject);
+      } else {
+        this.notificationService
+          .createNotification(event)
+          .then(() =>
+            this.eventsRef
+              .doc(event.id)
+              .update(event)
+              .then(resolve)
+              .catch(reject)
+          )
+          .catch(reject);
+      }
     });
   }
 
   delete(id: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
-      await this.eventsRef.doc(id).delete();
-      await this.removeNotification(id);
-      resolve();
+      this.notificationService
+        .removeNotification(id.toHashCode())
+        .then(() => this.eventsRef.doc(id).delete().then(resolve).catch(reject))
+        .catch(reject);
     });
   }
 
   private getObservable(dataCall: AngularFirestoreCollection<unknown>) {
     return dataCall.snapshotChanges().pipe(
       map((changes) =>
-        changes.map(({ payload }: any) => {
-          return {
-            id: payload.doc.id,
-            ...payload.doc.data(),
-          };
-        })
+        changes.map(({ payload }: any) => ({
+          id: payload.doc.id,
+          ...payload.doc.data(),
+        }))
       )
     );
   }
-
-  private createNotification = (event: IEvent): Promise<void> => {
-    console.log(
-      `Scheduling a notification for the event ${
-        event.name
-      } at ${event.startDate.toDate()}`
-    );
-    return new Promise(async (resolve, reject) => {
-      await this.removeNotification(event.id);
-      LocalNotifications.schedule({
-        notifications: [
-          {
-            title: event.name,
-            body: `${getTimeString(event.startDate.toDate())} - ${getTimeString(
-              event.endDate.toDate()
-            )}`,
-            id: event.id.toHashCode(),
-            schedule: { at: event.startDate.toDate() },
-          },
-        ],
-      })
-        .then(() => {
-          console.log('Notification scheduled');
-          resolve();
-        })
-        .catch(reject);
-    });
-  };
-
-  private removeNotification = (id: string): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      const pendingNotifications = await LocalNotifications.getPending();
-      if (
-        pendingNotifications.notifications.some(
-          (notif) => notif.id === id.toHashCode()
-        )
-      ) {
-        LocalNotifications.cancel({
-          notifications: [{ id: id.toHashCode() }],
-        })
-          .then(() => {
-            console.log('Notification removed');
-            resolve();
-          })
-          .catch(reject);
-      } else {
-        resolve();
-      }
-    });
-  };
 }
