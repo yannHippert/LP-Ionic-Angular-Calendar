@@ -25,12 +25,23 @@ export class EventService {
     this.eventsRef = db.collection(this.dbPath);
   }
 
+  /**
+   * Gets all the events
+   *
+   * @returns An observable of all the events
+   */
   getAll(): Observable<any> {
     return this.getObservable(
       this.db.collection(this.dbPath, (ref) => ref.orderBy('startDate'))
     );
   }
 
+  /**
+   * Gets all the events of a specific date
+   *
+   * @param date The date of which to get the events
+   * @returns An observable of the events
+   */
   getOfDate(date: Date): Observable<any> {
     const previousDay = getPreviousDay(date);
     previousDay.setHours(23);
@@ -52,6 +63,12 @@ export class EventService {
     );
   }
 
+  /**
+   * Gets all the events of a specific month
+   *
+   * @param date The date, which is in the month of which to get the events
+   * @returns An observable of the events
+   */
   getOfMonth(date: Date): Observable<any> {
     const previousMonth = new Date(
       date.getFullYear(),
@@ -96,7 +113,13 @@ export class EventService {
     });
   }
 
-  add(baseEvent: IBaseEvent): Promise<any> {
+  /**
+   * Add a new event into the database
+   *
+   * @param baseEvent The base event to add  to the database
+   * @returns Promise<IEvent> Promise of the event to created
+   */
+  add(baseEvent: IBaseEvent): Promise<IEvent> {
     return new Promise(async (resolve, reject) => {
       if (baseEvent.notification === true) {
         const areNotificationsEnabled =
@@ -119,7 +142,13 @@ export class EventService {
     });
   }
 
-  update(event: IEvent): Promise<void> {
+  /**
+   * Updates an event
+   *
+   * @param event The event to update
+   * @returns Promise<any> The promise to be resolved
+   */
+  update(event: IEvent): Promise<any> {
     return new Promise(async (resolve, reject) => {
       if (event.notification === false) {
         await this.notificationService.removeNotification(
@@ -141,6 +170,12 @@ export class EventService {
     });
   }
 
+  /**
+   * Deletes an event
+   *
+   * @param id The id of the event to delete
+   * @returns Promise<any> The promise to be resolved
+   */
   delete(id: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       this.notificationService
@@ -150,7 +185,15 @@ export class EventService {
     });
   }
 
-  private getObservable(dataCall: AngularFirestoreCollection<unknown>) {
+  /**
+   * Takes a request to get event add the necessary functions to make it an observable
+   *
+   * @param dataCall The request to the server to get the events
+   * @returns Observable<Array<IEvent>> Observable of the events specified int the dataCall parameter
+   */
+  private getObservable(
+    dataCall: AngularFirestoreCollection<unknown>
+  ): Observable<Array<IEvent>> {
     return dataCall.snapshotChanges().pipe(
       map((changes) =>
         changes.map(({ payload }: any) => ({
