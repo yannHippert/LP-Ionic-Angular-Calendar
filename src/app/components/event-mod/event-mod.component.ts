@@ -122,7 +122,7 @@ export class EventModComponent {
         if (!isEnabled) {
           this.event.notification = false;
           const toast = await this.toastController.create({
-            message: 'You have not enabled notifications',
+            message: 'Notification permission not granted!',
             duration: 2000,
             position: 'top',
             color: 'danger',
