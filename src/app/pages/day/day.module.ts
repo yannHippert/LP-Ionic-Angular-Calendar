@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DayPageRoutingModule } from './day-routing.module';
 
 import { DayPage } from './day.page';
-import { DayEventComponent } from 'src/app/day-event/day-event.component';
+import { DayEventComponent } from '@components/day-event/day-event.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, DayPageRoutingModule],

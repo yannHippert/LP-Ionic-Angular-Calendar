@@ -6,10 +6,10 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/firestore';
 import 'firebase/firestore';
-import { IBaseEvent, IEvent } from 'src/models/event.model';
-import { getNextDay, getPreviousDay, getTimestamp } from 'src/utils/date';
+import { IBaseEvent, IEvent } from '@models/event.model';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { getTimeString } from 'src/utils/date';
+import { getNextDay, getPreviousDay, getTimestamp } from '@utils/date';
+import { getTimeString } from '@utils/date';
 
 @Injectable({
   providedIn: 'root',
@@ -75,19 +75,6 @@ export class EventService {
     );
   }
 
-  private getObservable(dataCall: AngularFirestoreCollection<unknown>) {
-    return dataCall.snapshotChanges().pipe(
-      map((changes) =>
-        changes.map(({ payload }: any) => {
-          return {
-            id: payload.doc.id,
-            ...payload.doc.data(),
-          };
-        })
-      )
-    );
-  }
-
   get(id: any): any {
     return new Observable((obs) => {
       this.eventsRef
@@ -103,25 +90,42 @@ export class EventService {
   add(event: IBaseEvent): Promise<any> {
     return new Promise((resolve) => {
       this.eventsRef.add({ ...event }).then((res) => {
-        this.createNotification({ ...event, id: res.id }).then(() =>
-          resolve(res)
-        );
+        if (event.notification === true) {
+          this.createNotification({ ...event, id: res.id }).then(() =>
+            resolve(res)
+          );
+        } else {
+          resolve(res);
+        }
       });
     });
   }
 
   update(event: IEvent): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      await this.createNotification(event);
-      this.eventsRef.doc(event.id).update(event).then(resolve);
-    });
+    return Promise.all([
+      this.createNotification(event),
+      this.eventsRef.doc(event.id).update(event),
+    ]);
   }
 
   delete(id: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      await this.removeNotification(id);
-      this.eventsRef.doc(id).delete().then(resolve);
-    });
+    return Promise.all([
+      this.eventsRef.doc(id).delete(),
+      this.removeNotification(id),
+    ]);
+  }
+
+  private getObservable(dataCall: AngularFirestoreCollection<unknown>) {
+    return dataCall.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map(({ payload }: any) => {
+          return {
+            id: payload.doc.id,
+            ...payload.doc.data(),
+          };
+        })
+      )
+    );
   }
 
   private createNotification = (event: IEvent): Promise<void> => {
@@ -170,22 +174,3 @@ export class EventService {
     });
   };
 }
-
-declare global {
-  interface String {
-    toHashCode(): number;
-  }
-}
-
-String.prototype.toHashCode = function (): number {
-  var hash = 0,
-    i,
-    chr;
-  if (this.length === 0) return hash;
-  for (i = 0; i < this.length; i++) {
-    chr = this.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
-};

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IEvent } from 'src/models/event.model';
+import { IEvent } from 'src/app/models/event.model';
 import { Router } from '@angular/router';
 import { isAllDay } from '@utils/date';
 import { variables } from '@utils/vars';

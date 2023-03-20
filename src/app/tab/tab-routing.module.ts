@@ -11,31 +11,31 @@ const routes: Routes = [
       {
         path: 'day',
         loadChildren: () =>
-          import('../day/day.module').then((m) => m.DayPageModule),
+          import('@pages/day/day.module').then((m) => m.DayPageModule),
       },
       {
         path: 'events',
         loadChildren: () =>
-          import('../event-list/event-list.module').then(
+          import('@pages/event-list/event-list.module').then(
             (m) => m.EventListPageModule
           ),
       },
       {
         path: 'calendar',
         loadChildren: () =>
-          import('../month/month.module').then((m) => m.MonthPageModule),
+          import('@pages/month/month.module').then((m) => m.MonthPageModule),
       },
       {
         path: 'add',
         loadChildren: () =>
-          import('../event-add/event-add.module').then(
+          import('@pages/event-add/event-add.module').then(
             (m) => m.EventAddPageModule
           ),
       },
       {
         path: 'edit/:id',
         loadChildren: () =>
-          import('../event-edit/event-edit.module').then(
+          import('@pages/event-edit/event-edit.module').then(
             (m) => m.EventEditPageModule
           ),
       },

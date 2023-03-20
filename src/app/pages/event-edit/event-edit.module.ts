@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { EventEditPageRoutingModule } from './event-edit-routing.module';
 
 import { EventEditPage } from './event-edit.page';
-import { EventModModule } from 'src/app/event-mod/event-mod.module';
+import { EventModModule } from '@components/event-mod/event-mod.module';
 
 @NgModule({
   imports: [

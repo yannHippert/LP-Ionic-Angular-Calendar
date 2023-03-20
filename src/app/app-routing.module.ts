@@ -8,17 +8,18 @@ const routes: Routes = [
   },
   {
     path: 'day',
-    loadChildren: () => import('./day/day.module').then((m) => m.DayPageModule),
+    loadChildren: () =>
+      import('./pages/day/day.module').then((m) => m.DayPageModule),
   },
   {
     path: 'month',
     loadChildren: () =>
-      import('./month/month.module').then((m) => m.MonthPageModule),
+      import('./pages/month/month.module').then((m) => m.MonthPageModule),
   },
   {
     path: 'event/edit/:id',
     loadChildren: () =>
-      import('./event-edit/event-edit.module').then(
+      import('./pages/event-edit/event-edit.module').then(
         (m) => m.EventEditPageModule
       ),
   },

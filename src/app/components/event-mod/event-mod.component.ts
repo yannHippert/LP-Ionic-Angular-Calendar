@@ -1,12 +1,13 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { IBaseEvent } from 'src/models/event.model';
+import { IBaseEvent } from '@models/event.model';
 import {
   getDateString,
   getTimestamp,
   getTimeString,
   isAllDay,
-} from 'src/utils/date';
-import { variables } from 'src/utils/vars';
+} from '@utils/date';
+import { variables } from '@utils/vars';
+
 @Component({
   selector: 'app-event-mod',
   templateUrl: './event-mod.component.html',
@@ -18,7 +19,6 @@ export class EventModComponent {
   startDateString: string = '';
   startTimeString: string = '';
   endTimeString: string = '';
-  notification: boolean = false;
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.event.color) this.event.color = variables.color.highlight;

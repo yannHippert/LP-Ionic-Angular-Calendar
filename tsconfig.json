@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@models/*": ["src/models/*"],
+      "@extensions/*": ["src/app/extensions/*"],
+      "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
       "@styles/*": ["src/styles/*"],
       "@pages/*": ["src/app/pages/*"],

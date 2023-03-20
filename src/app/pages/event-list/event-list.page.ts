@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { IEvent } from 'src/models/event.model';
-import { IDay } from 'src/models/day.model';
+import { IEvent } from 'src/app/models/event.model';
+import { IDay } from 'src/app/models/day.model';
 import { EventService } from '@services/event/event.service';
 import {
   getLongDateString,

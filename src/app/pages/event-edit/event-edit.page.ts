@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { getNewEvent, IEvent } from 'src/models/event.model';
+import { ActivatedRoute } from '@angular/router';
+import { eventFactory, IEvent } from 'src/app/models/event.model';
 import { EventService } from '@services/event/event.service';
-import { getDateString } from 'src/utils/date';
 import { NavController } from '@ionic/angular';
 
 @Component({
@@ -16,7 +15,6 @@ export class EventEditPage implements OnInit {
   constructor(
     private EventService: EventService,
     private route: ActivatedRoute,
-    private router: Router,
     private navCtrl: NavController
   ) {}
 
@@ -24,15 +22,8 @@ export class EventEditPage implements OnInit {
    * Gets the id of the event to edit from the url.
    */
   ngOnInit(): void {
-    const startDate = new Date();
-    const endDate = new Date();
-    startDate.setMinutes(0);
-    endDate.setMinutes(0);
-    endDate.setHours(startDate.getHours() + 2);
-    startDate.setHours(startDate.getHours() + 1);
-    this.event = getNewEvent();
-
     const id = this.route.snapshot.params['id'];
+    this.event = eventFactory(id) as IEvent;
     this.loadEvent(id);
   }
 
@@ -46,7 +37,6 @@ export class EventEditPage implements OnInit {
   loadEvent(id: string): void {
     this.EventService.get(id).subscribe(
       (event: IEvent) => (this.event = event)
-      //() => this.redirect(new Date())
     );
   }
 
@@ -77,14 +67,5 @@ export class EventEditPage implements OnInit {
     this.EventService.delete(this.event.id).then(() => {
       this.navCtrl.back();
     });
-  }
-
-  /**
-   * Redirects the user to the view of a specific day.
-   *
-   * @param date The date to which to redirect the user.
-   */
-  redirect(date: Date): void {
-    this.router.navigate(['day/' + getDateString(date)]);
   }
 }

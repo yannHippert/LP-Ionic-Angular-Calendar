@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEvent } from 'src/models/event.model';
-import { IDay } from 'src/models/day.model';
+import { IEvent } from 'src/app/models/event.model';
+import { IDay } from 'src/app/models/day.model';
 import { EventService } from '@services/event/event.service';
 import {
   getDateString,
