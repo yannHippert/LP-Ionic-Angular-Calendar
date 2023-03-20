@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { IBaseEvent } from '@models/event.model';
+import { Component, Input, SimpleChanges } from '@angular/core';
+import { IBaseEvent } from 'src/models/event.model';
 import {
   getDateString,
   getTimestamp,
@@ -18,6 +18,7 @@ export class EventModComponent {
   startDateString: string = '';
   startTimeString: string = '';
   endTimeString: string = '';
+  notification: boolean = false;
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.event.color) this.event.color = variables.color.highlight;

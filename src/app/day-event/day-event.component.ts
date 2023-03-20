@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IEvent } from '@models/event.model';
+import { IEvent } from 'src/models/event.model';
 import { Router } from '@angular/router';
-import { isAllDay } from 'src/utils/date';
-import { variables } from 'src/utils/vars';
+import { isAllDay } from '@utils/date';
+import { variables } from '@utils/vars';
 
 @Component({
   selector: 'app-day-event',

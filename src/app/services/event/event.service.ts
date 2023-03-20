@@ -6,7 +6,7 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/firestore';
 import 'firebase/firestore';
-import { IBaseEvent, IEvent } from '@models/event.model';
+import { IBaseEvent, IEvent } from 'src/models/event.model';
 import { getNextDay, getPreviousDay, getTimestamp } from 'src/utils/date';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { getTimeString } from 'src/utils/date';
@@ -103,38 +103,72 @@ export class EventService {
   add(event: IBaseEvent): Promise<any> {
     return new Promise((resolve) => {
       this.eventsRef.add({ ...event }).then((res) => {
-        const scheduledAt = new Date(Date.now() + 1000 * 10);
-        console.log(new Date(), scheduledAt);
-        LocalNotifications.schedule({
-          notifications: [
-            {
-              title: event.name,
-              body: `${getTimeString(
-                event.startDate.toDate()
-              )} - ${getTimeString(event.endDate.toDate())}`,
-              id: res.id.toHashCode(),
-              schedule: { at: scheduledAt },
-              sound: undefined,
-              attachments: undefined,
-              actionTypeId: '',
-              extra: null,
-            },
-          ],
-        }).then(() => console.log('Scheduled notification'));
-        console.log(res.id);
-        resolve(res);
+        this.createNotification({ ...event, id: res.id }).then(() =>
+          resolve(res)
+        );
       });
     });
   }
 
   update(event: IEvent): Promise<any> {
-    return this.eventsRef.doc(event.id).update(event);
+    return new Promise(async (resolve, reject) => {
+      await this.createNotification(event);
+      this.eventsRef.doc(event.id).update(event).then(resolve);
+    });
   }
 
   delete(id: string): Promise<any> {
-    console.log(LocalNotifications.getPending());
-    return this.eventsRef.doc(id).delete();
+    return new Promise(async (resolve, reject) => {
+      await this.removeNotification(id);
+      this.eventsRef.doc(id).delete().then(resolve);
+    });
   }
+
+  private createNotification = (event: IEvent): Promise<void> => {
+    console.log(
+      `Scheduling a notification for the event ${
+        event.name
+      } at ${event.startDate.toDate()}`
+    );
+    return new Promise(async (resolve) => {
+      await this.removeNotification(event.id);
+      LocalNotifications.schedule({
+        notifications: [
+          {
+            title: event.name,
+            body: `${getTimeString(event.startDate.toDate())} - ${getTimeString(
+              event.endDate.toDate()
+            )}`,
+            id: event.id.toHashCode(),
+            schedule: { at: event.startDate.toDate() },
+          },
+        ],
+      }).then(() => {
+        console.log('Notification scheduled');
+        resolve();
+      });
+    });
+  };
+
+  private removeNotification = (id: string): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      const pendingNotifications = await LocalNotifications.getPending();
+      if (
+        pendingNotifications.notifications.some(
+          (notif) => notif.id === id.toHashCode()
+        )
+      ) {
+        LocalNotifications.cancel({
+          notifications: [{ id: id.toHashCode() }],
+        }).then(() => {
+          console.log('Notification removed');
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
+  };
 }
 
 declare global {

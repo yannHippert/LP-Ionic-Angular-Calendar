@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getNewEvent, IEvent } from '@models/event.model';
+import { getNewEvent, IEvent } from 'src/models/event.model';
 import { EventService } from '@services/event/event.service';
 import { getDateString } from 'src/utils/date';
 import { NavController } from '@ionic/angular';

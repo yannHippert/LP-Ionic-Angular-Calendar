@@ -9,8 +9,4 @@ export class TabPage implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
-  onClick(e: any) {
-    console.log(e);
-  }
 }

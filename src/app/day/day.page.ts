@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IEvent } from '@models/event.model';
+import { IEvent } from 'src/models/event.model';
 import { EventService } from '@services/event/event.service';
 import { interval } from 'rxjs';
 import { getTimeSlots, getTimeString } from 'src/utils/date';

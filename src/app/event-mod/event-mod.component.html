@@ -55,4 +55,12 @@
     <ion-label position="fixed">Event-color</ion-label>
     <input slot="end" type="color" [(ngModel)]="event.color" />
   </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Notification</ion-label>
+    <label class="switch" slot="end">
+      <input type="checkbox" [(ngModel)]="notification" />
+      <span class="slider round"></span>
+    </label>
+  </ion-item>
 </ion-list>
